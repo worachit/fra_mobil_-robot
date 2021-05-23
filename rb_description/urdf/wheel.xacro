@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_wheel">
+    <xacro:macro name="wheel" params="side rb_wheel_xyz rb_wheel_rpy">
+        
+        <!-- wheel -->
+        <joint name="${side}_wheel_joint" type="continuous">
+            <origin xyz="${rb_wheel_xyz}" rpy="${rb_wheel_rpy}" />
+            <child link="${side}_wheel" />
+            <parent link="${WHEEL_PARENT}" />
+            <axis xyz="0 0 1" rpy="0 0 0" />
+            <limit effort="10000" velocity="1000" />
+            <joint_properties damping="${RB_WHEEL_DAMP}" friction="${RB_WHEEL_FRICTION}" />
+        </joint>
+
+        <transmission name="${side}_wheel_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${side}_wheel_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${side}_wheel_actuator">
+                <mechanicalReduction>1</mechanicalReduction>
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </actuator>
+        </transmission>
+
+        <link name="${side}_wheel">
+            <inertial>
+                <mass value="0.5" />
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0 0.0 0" rpy="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://rb_description/models/robot/wheel.STL" scale="1 1 1" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 ${RB_WHEEL_W/2}" rpy="0.0 0.0 0.0" />
+                <geometry>
+                    <cylinder radius="${RB_WHEEL_R}" length="${RB_WHEEL_W}" />
+                </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="${side}_wheel">
+            <mu1>1.0</mu1>
+            <mu2>1.0</mu2>
+            <material>Gazebo/Red</material>
+        </gazebo>
+
+    </xacro:macro>
+</robot>

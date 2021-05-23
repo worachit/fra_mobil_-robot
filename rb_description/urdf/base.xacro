@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_chassis">
+    <xacro:macro name="base" params="">
+        
+        <link name="base_footprint"/>
+        <joint name="footprint2chassis" type="fixed">
+            <origin xyz="0.0 0.0 ${RB_H}" rpy="0.0 0.0 0.0"/>
+            <parent link="base_footprint"/>
+            <child link="chassis"/>
+            <axis xyz="0.0 0.0 0.0"/>
+            <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+        </joint>
+        <link name="chassis">
+            <inertial>
+                <mass value="2"/>
+                <origin rpy="0 0 0" xyz="150e-3 0 0"/>
+                <inertia ixx="0.0395416666667" ixy="0" ixz="0" iyy="0.106208333333" iyz="0" izz="0.106208333333"/>
+            </inertial>
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="package://rb_description/models/robot/chassis.STL" scale="1 1 1"/>
+                </geometry>
+            </visual>
+        </link>
+        
+        <gazebo reference="chassis">
+            <material>Gazebo/Gray</material>
+        </gazebo>
+
+        <collision>
+            <!-- ball wheel collision -->
+            <origin xyz="${RB_BWHEEL_OFFX} 0.0 ${RB_BWHEEL_R-RB_H}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${RB_BWHEEL_R}"/>
+            </geometry>
+        </collision>
+
+
+        <joint name="chassis2ball" type="fixed">
+            <origin xyz="${RB_BWHEEL_OFFX} 0.0 ${RB_BWHEEL_R-RB_H}" rpy="0.0 0.0 0.0"/>
+            <parent link="chassis"/>
+            <child link="ball"/>
+            <axis xyz="0.0 0.0 0.0"/>
+            <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+        </joint>
+        
+        <link name="ball">
+            <collision>
+                <!-- ball wheel collision -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <sphere radius="${RB_BWHEEL_R}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="ball">
+            <mu1>0.1</mu1>
+            <mu2>0.1</mu2>
+        </gazebo>
+
+    </xacro:macro>
+</robot>

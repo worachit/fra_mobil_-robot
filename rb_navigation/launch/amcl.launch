@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- load map using mapserver -->
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find rb_slam)/maps/room_map.yaml"/>
+
+    <!-- call robot localization -->
+    <arg name="use_map_topic" default="true"/>
+    <arg name="scan_topic" default="mbrb/lidar/scan"/>
+
+    <arg name="base_frame" default="chassis"/>
+    <arg name="map_frame" default="map"/>
+    <arg name="odom_frame" default="odom"/>
+
+    <node pkg="amcl" type="amcl" name="amcl">
+        <!-- topic remap -->
+        <remap from="scan" to="$(arg scan_topic)"/>
+        <!-- particle filter parameters -->
+        <param name="min_particles" value="100"/>
+        <param name="max_particles" value="3000"/>
+        <param name="resample_interval" value="2"/>
+        <param name="gui_publish_rate" value="10"/>
+        <param name="use_map_topic" value="$(arg use_map_topic)"/>
+        <!-- laser parameters -->
+        <param name="laser_min_range" value="-1"/>
+        <param name="laser_max_range" value="-1"/>
+        <param name="laser_model_type" value="likelihood_field"/>
+        <!-- robot and environment parameter -->
+        <param name="odom_model_type" value="diff"/>
+        <param name="odom_alpha1" value="0.2"/>
+        <param name="odom_alpha2" value="0.2"/>
+        <param name="odom_alpha3" value="0.2"/>
+        <param name="odom_alpha4" value="0.2"/>
+        <param name="odom_frame_id" value="$(arg odom_frame)"/>
+        <param name="base_frame_id" value="$(arg base_frame)"/>
+        <param name="global_frame_id" value="$(arg map_frame)"/> 
+    </node>
+
+</launch>

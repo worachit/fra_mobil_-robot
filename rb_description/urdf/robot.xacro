@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mbrb">
+
+    <!-- define robot property -->
+    <xacro:property name="PI" value="3.14159265"/>
+
+    <!-- <xacro:property name="rb_wheel_offx" value="40e-3"/>
+    <xacro:property name="rb_wheel_offy" value="65e-3"/> -->
+    
+    <xacro:property name="RB_H" value="45e-3"/>
+    <xacro:property name="RB_BWHEEL_OFFX" value="170e-3"/>
+    <xacro:property name="RB_BWHEEL_R" value="10e-3"/>
+
+    <xacro:property name="WHEEL_PARENT" value="chassis"/>
+    <xacro:property name="PARENT" value="chassis"/>
+
+    <xacro:property name="RB_WHEEL_R" value="45e-3"/>
+    <xacro:property name="RB_WHEEL_W" value="8e-3"/>
+    <xacro:property name="RB_WHEEL_DAMP" value="10"/>
+    <xacro:property name="RB_WHEEL_FRICTION" value="10"/>
+
+
+    <!-- include robot xacro -->
+    <xacro:include filename="$(find rb_description)/urdf/base.xacro"/>
+    <xacro:include filename="$(find rb_description)/urdf/wheel.xacro"/>
+    <xacro:include filename="$(find rb_description)/urdf/lidar.xacro"/>
+    <xacro:include filename="$(find rb_description)/urdf/camera.xacro"/>
+    
+    <!-- define mechanical properties of the mobile robot -->
+    <xacro:base/>
+    <xacro:wheel
+        side="left"
+        rb_wheel_xyz="40e-3 69e-3 0.0"
+        rb_wheel_rpy="${-1*PI/2} 0.0 0.0"
+    />
+    <xacro:wheel
+        side="right"
+        rb_wheel_xyz="40e-3 -69e-3 0.0"
+        rb_wheel_rpy="${-1*PI/2} 0.0 0.0"
+    />
+    <!-- define sensor of the mobile robot -->
+    <xacro:m_lidar
+        visualize_ray="false"
+    />
+    <xacro:m_camera 
+    />
+
+    <!-- define controller (differential drive controller) -->
+    <gazebo>
+        <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
+            <robotNamespace>/mbrb</robotNamespace>
+            <legacyMode>false</legacyMode>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>50</updateRate>
+            <leftJoint>left_wheel_joint</leftJoint>
+            <rightJoint>right_wheel_joint</rightJoint>
+            <wheelSeparation>0.138</wheelSeparation>
+            <wheelDiameter>${RB_WHEEL_R*2}</wheelDiameter>
+            <torque>10</torque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>chassis</robotBaseFrame>
+        </plugin>
+    </gazebo>
+</robot>

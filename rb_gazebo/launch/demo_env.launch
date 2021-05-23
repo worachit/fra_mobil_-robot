@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- paramter and argumet setup -->
+    <arg name="debug" default="false" />
+    <arg name="gui" default="true" />
+    <arg name="pause" default="false" />
+    <arg name="world" default="$(find rb_gazebo)/worlds/demo_room.world" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rb_description)/urdf/robot.xacro'" />
+
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world)" />
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" default="$(arg gui)" />
+        <arg name="paused" value="$(arg pause)" />
+        <arg name="use_sim_time" value="true" />
+    </include>
+
+    <!-- send fake joint values -->
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false"/>
+    </node> -->
+    <!-- Combine joint values -->
+    <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/> -->
+
+    <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model mbrb" />
+
+    <rosparam file="$(find rb_description)/urdf/config/controller_config.yaml" command="load" />
+
+</launch>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_lidar">
+    <xacro:macro name="m_lidar" params="visualize_ray">
+        <joint name="chassis2lidar" type="fixed">
+            <origin xyz="62e-3 0.0 71.25e-3" rpy="0.0 0.0 0.0" />
+            <parent link="${PARENT}" />
+            <child link="lidar" />
+        </joint>
+
+        <link name="lidar">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+                <mass value="0.1" />
+                <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+                <geometry>
+                    <cylinder radius="35e-3" length="25e-3" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- lidar profile ydlidar x4 -->
+        <gazebo reference="lidar">
+            <sensor type="gpu_ray" name="head_hokuyo_sensor">
+                <pose>0 0 0 0 0 0</pose>
+                <visualize>${visualize_ray}</visualize>
+                <update_rate>12</update_rate>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>720</samples>
+                            <resolution>1</resolution>
+                            <min_angle>${-1*PI}</min_angle>
+                            <max_angle>${PI}</max_angle>
+                        </horizontal>
+                    </scan>
+                    <range>
+                        <min>0.12</min>
+                        <max>10.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </ray>
+                <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+                    <topicName>/mbrb/lidar/scan</topicName>
+                    <frameName>lidar</frameName>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

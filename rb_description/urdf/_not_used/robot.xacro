@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mbrb">
+
+    <!-- define robot property -->
+
+    <!-- <xacro:property name="pi" value="3.14159265"/>
+    <xacro:property name="rb_h" value="45e-3"/>
+    <xacro:property name="rb_wheel_offx" value="40e-3"/>
+    <xacro:property name="rb_wheel_offy" value="65e-3"/>
+    
+    <xacro:property name="rb_bwheel_offx" value="170e-3"/>
+    <xacro:property name="rb_bwheel_r" value="10e-3"/> -->
+
+    <xacro:property name="WHEEL_PARENT" value="chassis"/>
+    <xacro:property name="RB_WHEEL_R" value="45e-3"/>
+    <xacro:property name="RB_WHEEL_W" value="8e-3"/>
+    <xacro:property name="RB_WHEEL_DAMP" value="10"/>
+    <xacro:property name="RB_WHEEL_FRICTION" value="10"/>
+
+    <!-- define color of the robot in gazebo -->
+    <!-- <gazebo reference="chassis">
+        <material>Gazebo/Gray</material>
+    </gazebo>
+    <gazebo reference="left_wheel">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="right_wheel">
+        <material>Gazebo/Red</material>
+    </gazebo> -->
+
+    <!-- include robot xacro -->
+    <xacro:include filename="$(find rb_description)/urdf/chassis.xacro"/>
+    <xacro:include filename="$(find rb_description)/urdf/wheel.xacro"/>
+    <!-- define controller (differential drive controller) -->
+
+    <!-- define chassis properties -->
+
+    <!-- <link name="chassis">
+        <inertial>
+            <mass value="5"/>
+            <origin rpy="0 0 0" xyz="150e-3 0 ${rb_h}"/>
+            <inertia ixx="0.0395416666667" ixy="0" ixz="0" iyy="0.106208333333" iyz="0" izz="0.106208333333"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 ${rb_h}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://rb_description/models/robot/chassis.STL" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            ball wheel collision
+            <origin xyz="${rb_bwheel_offx} 0.0 ${rb_bwheel_r}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${rb_bwheel_r}"/>
+            </geometry>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>0</mu>
+                        <mu2>0</mu2>
+                        <slip1>1.0</slip1>
+                        <slip2>1.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+    </link> -->
+    <xacro:chassis
+        rb_h = "45e-3"
+        rb_bwheel_offx = "170e-3"
+        rb_bwheel_r = "10e-3"/>
+    <xacro:wheel
+        side="left"
+        rb_wheel_xyz="40e-3 65e-3 45e-3"
+        rb_wheel_rpy="-1.57 0.0 0.0"/>
+    <xacro:wheel
+        side="right"
+        rb_wheel_xyz="40e-3 -65e-3 45e-3"
+        rb_wheel_rpy="1.57 0.0 0.0"/>
+
+
+    <!-- left wheel -->
+    <!-- <joint name="left_wheel_joint" type="continuous">
+        <origin xyz="${rb_wheel_offx} ${rb_wheel_offy} ${rb_h}" rpy="${-1*pi/2} 0.0 0.0"/>
+        <child link="left_wheel"/>
+        <parent link="chassis"/>
+        <axis xyz="0 0 1" rpy="0 0 0"/>
+        <limit effort="10000" velocity="1000"/>
+        <joint_properties damping="${rb_wheel_damp}" friction="${rb_wheel_friction}"/>
+    </joint>
+    
+    <transmission name="left_wheel_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="left_wheel_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>  
+        </joint>
+        <actuator name="left_wheel_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+            <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        </actuator>
+    </transmission>
+
+    <link name="left_wheel">
+        <inertial>
+            <mass value="0.2"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://rb_description/models/robot/wheel.STL" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 ${rb_wheel_w/2}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${rb_wheel_r}" length="${rb_wheel_w}"/>
+            </geometry>
+        </collision>
+    </link> -->
+
+    <!-- right wheel -->
+    <!-- <joint name="right_wheel_joint" type="continuous">
+        <origin xyz="${rb_wheel_offx} ${-1*rb_wheel_offy} ${rb_h}" rpy="${pi/2} 0.0 0.0"/>
+        <child link="right_wheel"/>
+        <parent link="chassis"/>
+        <axis xyz="0 0 1" rpy="0 0 0"/>
+        <limit effort="10000" velocity="1000"/>
+        <joint_properties damping="${rb_wheel_damp}" friction="${rb_wheel_friction}"/>
+    </joint>
+
+    <transmission name="right_wheel_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="right_wheel_joint">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>  
+        </joint>
+        <actuator name="right_wheel_actuator">
+          <mechanicalReduction>5</mechanicalReduction>
+          <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        </actuator>
+    </transmission>
+    
+    <link name="right_wheel">
+        <inertial>
+            <mass value="0.2"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://rb_description/models/robot/wheel.STL" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 ${rb_wheel_w/2}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${rb_wheel_r}" length="${rb_wheel_w}"/>
+            </geometry>
+        </collision>
+    </link>     -->
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so ">
+        </plugin>
+    </gazebo>
+</robot>

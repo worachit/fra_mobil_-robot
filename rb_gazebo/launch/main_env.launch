@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- paramter and argumet setup -->
+    <arg name="debug" default="false" />
+    <arg name="gui" default="true" />
+    <arg name="pause" default="false" />
+    <arg name="world" default="$(find rb_gazebo)/worlds/main_room.world" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rb_description)/urdf/robot.xacro'" />
+
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world)" />
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" default="$(arg gui)" />
+        <arg name="paused" value="$(arg pause)" />
+        <arg name="use_sim_time" value="true" />
+    </include>
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false"/>
+    </node> 
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- Show in Rviz   -->
+    <!-- <node name="rviz" pkg="rviz" type="rviz"/> -->
+    <node name="rviz" pkg="rviz" type="rviz" args ="-d $(find rb_description)/rviz/robot_visualize3.rviz" />
+    
+    <!-- Show in Gazebo -->
+    <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model mbrb" />
+
+</launch>
