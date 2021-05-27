@@ -42,8 +42,8 @@
     <xacro:m_lidar
         visualize_ray="false"
     />
-    <xacro:m_camera 
-    />
+    <!-- <xacro:m_camera 
+    /> -->
 
     <!-- define controller (differential drive controller) -->
     <gazebo>

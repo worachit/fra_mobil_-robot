@@ -8,7 +8,7 @@
             <child link="${side}_wheel" />
             <parent link="${WHEEL_PARENT}" />
             <axis xyz="0 0 1" rpy="0 0 0" />
-            <limit effort="10000" velocity="1000" />
+            <limit effort="1000" velocity="1000" />
             <joint_properties damping="${RB_WHEEL_DAMP}" friction="${RB_WHEEL_FRICTION}" />
         </joint>
 

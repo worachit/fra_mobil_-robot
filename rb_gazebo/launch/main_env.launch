@@ -28,4 +28,6 @@
     <!-- Show in Gazebo -->
     <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model mbrb" />
 
+    <!-- <include file="$(find rb_navigation)/launch/amcl.launch" />
+    <include file="$(find rb_navigation)/launch/move_base.launch" /> -->
 </launch>
