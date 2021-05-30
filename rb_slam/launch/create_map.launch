@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find rb_gazebo)/launch/main_env.launch" />
+    <!-- <include file="$(find rb_gazebo)/launch/main_env.launch" /> -->
 
     <!-- run teleop node -->
     <!-- <node pkg="rb_teleop" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/> -->
@@ -37,9 +37,9 @@
         <param name="resampleThreshold" value="0.5" />
 
         <param name="particles" value="30" />
-        <param name="xmin" value="-10.0" />
+        <param name="xmin" value="-5.0" />
         <param name="ymin" value="-10.0" />
-        <param name="xmax" value="10.0" />
+        <param name="xmax" value="5.0" />
         <param name="ymax" value="10.0" />
         <param name="delta" value="0.05" />
 

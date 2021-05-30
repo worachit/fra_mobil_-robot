@@ -60,7 +60,7 @@
             <commandTopic>cmd_vel</commandTopic>
             <odometryTopic>odom</odometryTopic>
             <odometryFrame>odom</odometryFrame>
-            <robotBaseFrame>chassis</robotBaseFrame>
+            <robotBaseFrame>base_footprint</robotBaseFrame>
         </plugin>
     </gazebo>
 </robot>

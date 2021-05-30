@@ -23,7 +23,8 @@
 
     <!-- Show in Rviz   -->
     <!-- <node name="rviz" pkg="rviz" type="rviz"/> -->
-    <node name="rviz" pkg="rviz" type="rviz" args ="-d $(find rb_description)/rviz/robot_visualize3.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" />
+    <!-- args ="-d $(find rb_gazebo)/rviz/world_visualize.rviz"  -->
     
     <!-- Show in Gazebo -->
     <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model mbrb" />
