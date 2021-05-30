@@ -7,7 +7,7 @@
     <arg name="world" default="$(find rb_gazebo)/worlds/main_room.world" />
     <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rb_description)/urdf/robot.xacro'" />
 
-
+    
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world)" />
         <arg name="debug" value="$(arg debug)" />
