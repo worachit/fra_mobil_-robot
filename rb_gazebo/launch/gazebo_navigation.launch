@@ -22,13 +22,12 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
     <!-- Show in Rviz   -->
-    <!-- <node name="rviz" pkg="rviz" type="rviz"/> -->
-    <node name="rviz" pkg="rviz" type="rviz" />
-    <!-- args ="-d $(find rb_gazebo)/rviz/world_visualize.rviz"  -->
-    
+    <node name="rviz" pkg="rviz" type="rviz" args ="-d $(find rb_gazebo)/rviz/world_visualize.rviz"/>
+
     <!-- Show in Gazebo -->
     <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model mbrb" />
 
-    <!-- <include file="$(find rb_navigation)/launch/amcl.launch" />
-    <include file="$(find rb_navigation)/launch/move_base.launch" /> -->
+    <!-- load robot localization(amcl) and movebase node -->
+    <include file="$(find rb_navigation)/launch/localization.launch" />
+    <include file="$(find rb_navigation)/launch/move_base.launch" />
 </launch>

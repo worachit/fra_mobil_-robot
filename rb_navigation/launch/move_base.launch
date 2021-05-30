@@ -9,11 +9,11 @@
     <param name="oscillation_distance" value="0.5" />
 
     <!-- load costmap and planner parameter -->
-    <rosparam file="$(find rb_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find rb_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find rb_navigation)/config/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find rb_navigation)/config/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find rb_navigation)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find rb_navigation)/config/common_costmap.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rb_navigation)/config/common_costmap.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rb_navigation)/config/local_costmap.yaml" command="load" />
+    <rosparam file="$(find rb_navigation)/config/global_costmap.yaml" command="load" />
+    <rosparam file="$(find rb_navigation)/config/local_planner.yaml" command="load" />
 
     <remap from="odom" to="mbrb/odom"/>
     <remap from="cmd_vel" to="mbrb/cmd_vel"/>

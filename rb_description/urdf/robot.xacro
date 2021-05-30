@@ -3,9 +3,6 @@
 
     <!-- define robot property -->
     <xacro:property name="PI" value="3.14159265"/>
-
-    <!-- <xacro:property name="rb_wheel_offx" value="40e-3"/>
-    <xacro:property name="rb_wheel_offy" value="65e-3"/> -->
     
     <xacro:property name="RB_H" value="45e-3"/>
     <xacro:property name="RB_BWHEEL_OFFX" value="170e-3"/>
@@ -38,12 +35,12 @@
         rb_wheel_xyz="40e-3 -69e-3 0.0"
         rb_wheel_rpy="${-1*PI/2} 0.0 0.0"
     />
+
     <!-- define sensor of the mobile robot -->
     <xacro:m_lidar
         visualize_ray="false"
     />
-    <!-- <xacro:m_camera 
-    /> -->
+    <xacro:m_camera/>
 
     <!-- define controller (differential drive controller) -->
     <gazebo>
@@ -51,7 +48,7 @@
             <robotNamespace>/mbrb</robotNamespace>
             <legacyMode>false</legacyMode>
             <alwaysOn>true</alwaysOn>
-            <updateRate>50</updateRate>
+            <updateRate>100</updateRate>
             <leftJoint>left_wheel_joint</leftJoint>
             <rightJoint>right_wheel_joint</rightJoint>
             <wheelSeparation>0.138</wheelSeparation>
@@ -61,6 +58,9 @@
             <odometryTopic>odom</odometryTopic>
             <odometryFrame>odom</odometryFrame>
             <robotBaseFrame>base_footprint</robotBaseFrame>
+            <publishWheelTF>false </publishWheelTF>
+            <publishOdomTF>true</publishOdomTF>
+            <publishWheelJointState>false</publishWheelJointState>
         </plugin>
     </gazebo>
 </robot>
