@@ -4,6 +4,7 @@ import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped, PoseStamped
 from nav_msgs.msg import Odometry
 import queue
+import tf
 
 class FollowWaypoint:
     def __init__(self):
@@ -12,6 +13,7 @@ class FollowWaypoint:
         self.waypoint_topic = "initialpose"
         self.publish_waypoint_topic = "move_base_simple/goal"
         self.odom_pose_topic = "mbrb/odom"
+        self.map_frame = "map"
 
         self.pub_waypoint = rospy.Publisher(self.publish_waypoint_topic,PoseStamped,queue_size=1)
         self.rate = rospy.Rate(10)
@@ -19,7 +21,7 @@ class FollowWaypoint:
         self.waypoint_queue = queue.Queue()
 
         self.current_goal = None
-        # status flag == 3 means robot reached target , flag == 1 means robot is moving
+        self.listener = tf.TransformListener()
         
     def subscriber(self):
         rospy.Subscriber(self.waypoint_topic, PoseWithCovarianceStamped, self.waypointCallback)
@@ -33,9 +35,11 @@ class FollowWaypoint:
         dummy_message.header = message.header
         dummy_message.pose = message.pose.pose
 
+        dummy_message = self.listener.transformPose(self.map_frame,dummy_message)
+
         self.waypoint_queue.put(dummy_message)
         print("new waypoint was added, total waypoint : {}".format(self.waypoint_queue.qsize()))
-        print(dummy_message)
+        print(dummy_message.pose)
         print("********************")
     
     def calPose(self,odom_message):
@@ -44,8 +48,7 @@ class FollowWaypoint:
         
         x_goal = x
         y_goal = y
-
-        # no goal
+        # if goal exist set x_goal and y_goal to that goal position
         if self.current_goal != None:
             x_goal = self.current_goal.pose.position.x
             y_goal = self.current_goal.pose.position.y
@@ -64,7 +67,7 @@ class FollowWaypoint:
             self.rate.sleep()
         
             print("next way point was publish, {} waypoint left".format(self.waypoint_queue.qsize()))
-            print(next_waypoint)
+            print(next_waypoint.pose)
             print("********************")
 
 if __name__ == "__main__":
