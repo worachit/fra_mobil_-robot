@@ -6,11 +6,6 @@ obstacle_range: 2.5
 footprint: [[0.0,-0.073],[0.215,-0.073],[0.215,0.073],[0.0,0.073]]
 footprint_padding: 0.02
 
-# parameter for inflation layer
-inflation_layer:
-  inflation_radius: 0.5
-  cost_scaling_factor: 5.0
-
 # parameter for obstacle layer
 obstacle_layer:
   observation_sources: lidar_scan

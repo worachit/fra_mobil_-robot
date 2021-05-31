@@ -1,6 +1,6 @@
 
 local_costmap:
-  global_frame: odom
+  global_frame: map
 
   update_frequency: 10.0
   publish_frequency: 3.0
@@ -12,6 +12,11 @@ local_costmap:
   width: 3
   height: 3
   resolution: 0.025
+  
+  # parameter for inflation layer
+  inflation_layer:
+    inflation_radius: 0.3
+    # cost_scaling_factor: 5.0
 
   plugins: 
   - {name: static_layer,    type: "costmap_2d::StaticLayer"}

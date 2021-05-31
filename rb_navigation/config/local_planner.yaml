@@ -31,11 +31,11 @@ TrajectoryPlannerROS:
   controller_frequency: 30
 
 # trajectory scoring parameter
-  pdist_scale: 0.8
-  gdist_scale: 0.5
-  occdist_scale: 0.1
+  pdist_scale: 0.4
+  gdist_scale: 0.4
+  occdist_scale: 0.5
 
-  heading_lookahead: 0.8
+  heading_lookahead: 1.5
   dwa: true
   global_frame_id: odom
 
